@@ -18,11 +18,10 @@ app.use('/internships', internshipRoutes);
 app.use('/applications', applicationRoutes);
 app.use('/admin', adminRoutes);
 
+const errorHandler = require('./middleware/errorHandler');
+
 // Global Error Handler
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ error: 'Internal Server Error', details: err.message });
-});
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
