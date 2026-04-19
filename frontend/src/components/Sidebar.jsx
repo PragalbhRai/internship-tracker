@@ -16,18 +16,10 @@ const Sidebar = () => {
             
             <div className="flex-1 px-4 py-6 space-y-2">
                 <NavLink to={`/${user.role.toLowerCase() === 'company_poc' ? 'company' : user.role.toLowerCase()}`} end 
-                    className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${isActive ? 'bg-accent font-medium shadow-md' : 'hover:bg-gray-800'}`}>
+                    className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${isActive ? 'bg-indigo-600 font-medium shadow-md' : 'hover:bg-gray-800'}`}>
                     <LayoutDashboard size={20} />
                     <span>Dashboard</span>
                 </NavLink>
-                
-                {user.role === 'ADMIN' && (
-                    <NavLink to="/admin/students" 
-                        className={({ isActive }) => `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${isActive ? 'bg-accent font-medium shadow-md' : 'hover:bg-gray-800'}`}>
-                        <Users size={20} />
-                        <span>Students</span>
-                    </NavLink>
-                )}
             </div>
 
             <div className="p-4 border-t border-gray-700">

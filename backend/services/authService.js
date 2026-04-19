@@ -3,6 +3,10 @@ const jwt = require('jsonwebtoken');
 const authRepository = require('../repositories/authRepository');
 const AppError = require('../utils/AppError');
 
+if (!process.env.JWT_SECRET) {
+    throw new Error('FATAL ERROR: JWT_SECRET environment variable is not set.');
+}
+
 class AuthService {
     async register(userData) {
         const { email, password, role, ...details } = userData;
@@ -49,7 +53,7 @@ class AuthService {
         }
 
         const payload = { user_id: user.user_id, role: user.role };
-        const token = jwt.sign(payload, process.env.JWT_SECRET || 'super_secret', { expiresIn: '1d' });
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
 
         return {
             token,

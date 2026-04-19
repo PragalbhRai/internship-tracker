@@ -18,6 +18,15 @@ exports.myApplications = asyncHandler(async (req, res) => {
 });
 
 exports.getAllApplications = asyncHandler(async (req, res) => {
-    const applications = await applicationService.getAllApplications(req.user);
-    res.status(200).json(applications);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    
+    const allApplications = await applicationService.getAllApplications(req.user);
+    
+    const total = allApplications.length;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const data = allApplications.slice(startIndex, endIndex);
+
+    res.status(200).json({ data, total, page, limit });
 });

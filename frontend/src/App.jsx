@@ -3,6 +3,7 @@ import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AuthContext } from './context/AuthContext';
 
+import RoleSelect from './pages/RoleSelect';
 import Login from './pages/Login';
 import Sidebar from './components/Sidebar';
 import StudentDashboard from './pages/StudentDashboard';
@@ -13,8 +14,8 @@ import AdminDashboard from './pages/AdminDashboard';
 const ProtectedRoute = ({ allowedRoles }) => {
     const { user, token } = useContext(AuthContext);
     
-    if (!token) return <Navigate to="/" replace />;
-    if (allowedRoles && !allowedRoles.includes(user.role)) return <Navigate to="/" replace />;
+    if (!token) return <Navigate to="/login" replace />;
+    if (allowedRoles && !allowedRoles.includes(user.role)) return <Navigate to="/login" replace />;
 
     return (
         <div className="flex bg-gray-50 min-h-screen">
@@ -41,7 +42,8 @@ function App() {
     return (
         <AnimatePresence mode="wait">
             <Routes>
-                <Route path="/" element={<Login />} />
+                <Route path="/" element={<RoleSelect />} />
+                <Route path="/login" element={<Login />} />
                 
                 <Route element={<ProtectedRoute allowedRoles={['STUDENT']} />}>
                     <Route path="/student" element={<StudentDashboard />} />

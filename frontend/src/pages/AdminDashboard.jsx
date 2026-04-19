@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Activity, Users, DollarSign, Briefcase } from 'lucide-react';
+import { Activity, Users, DollarSign } from 'lucide-react';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState({ total_placed: 0, avg_stipend: 0, applications_per_internship: [] });
@@ -25,36 +25,64 @@ const AdminDashboard = () => {
         fetchData();
     }, []);
 
-    if (loading) return <div>Loading Analytics...</div>;
+    if (loading) {
+        return (
+            <div className="space-y-8 animate-pulse">
+                <div>
+                    <div className="h-8 bg-gray-200 rounded w-1/4 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+                            <div className="w-14 h-14 bg-gray-200 rounded-xl"></div>
+                            <div>
+                                <div className="h-4 bg-gray-200 rounded w-20 mb-2"></div>
+                                <div className="h-6 bg-gray-200 rounded w-16"></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 h-96">
+                    <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
+                    <div className="space-y-4">
+                        {[1, 2, 3, 4].map(i => (
+                            <div key={i} className="h-12 bg-gray-100 rounded"></div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-8">
             <div>
-                <h1 className="text-3xl font-bold text-darkBg tracking-tight">Admin Dashboard</h1>
+                <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Admin Dashboard</h1>
                 <p className="text-gray-500 mt-1">Platform Analytics and Student Placements.</p>
             </div>
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
-                    <div className="p-4 bg-indigo-50 text-accent rounded-xl"><Users size={24}/></div>
+                    <div className="p-4 bg-indigo-50 text-indigo-600 rounded-xl"><Users size={24}/></div>
                     <div>
                         <p className="text-sm font-medium text-gray-500">Total Placed</p>
-                        <h3 className="text-2xl font-bold text-darkBg">{stats.total_placed}</h3>
+                        <h3 className="text-2xl font-bold text-gray-900">{stats.total_placed}</h3>
                     </div>
                 </div>
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
                     <div className="p-4 bg-green-50 text-green-600 rounded-xl"><DollarSign size={24}/></div>
                     <div>
                         <p className="text-sm font-medium text-gray-500">Average Stipend</p>
-                        <h3 className="text-2xl font-bold text-darkBg">₹{parseFloat(stats.avg_stipend).toFixed(0)}</h3>
+                        <h3 className="text-2xl font-bold text-gray-900">₹{parseFloat(stats.avg_stipend || 0).toFixed(0)}</h3>
                     </div>
                 </div>
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
                     <div className="p-4 bg-purple-50 text-purple-600 rounded-xl"><Activity size={24}/></div>
                     <div>
                         <p className="text-sm font-medium text-gray-500">Active Drives</p>
-                        <h3 className="text-2xl font-bold text-darkBg">{stats.applications_per_internship.length}</h3>
+                        <h3 className="text-2xl font-bold text-gray-900">{stats.applications_per_internship.length}</h3>
                     </div>
                 </div>
             </div>
@@ -78,7 +106,7 @@ const AdminDashboard = () => {
                             {students.map(s => (
                                 <tr key={s.student_id} className="hover:bg-gray-50/50">
                                     <td className="p-4 font-mono font-medium">{s.roll_number}</td>
-                                    <td className="p-4 font-semibold text-darkBg">{s.first_name} {s.last_name}</td>
+                                    <td className="p-4 font-semibold text-gray-900">{s.first_name} {s.last_name}</td>
                                     <td className="p-4">{s.department} • Year {s.year_of_study}</td>
                                     <td className="p-4 font-medium">{s.cgpa}</td>
                                     <td className="p-4">{s.active_backlogs > 0 ? <span className="text-red-500 font-bold">{s.active_backlogs}</span> : '0'}</td>

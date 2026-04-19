@@ -2,8 +2,17 @@ const internshipService = require('../services/internshipService');
 const asyncHandler = require('../utils/asyncHandler');
 
 exports.getInternships = asyncHandler(async (req, res) => {
-    const internships = await internshipService.getInternships(req.user);
-    res.json(internships);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    
+    const allInternships = await internshipService.getInternships(req.user);
+    
+    const total = allInternships.length;
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    const data = allInternships.slice(startIndex, endIndex);
+
+    res.json({ data, total, page, limit });
 });
 
 exports.createInternship = asyncHandler(async (req, res) => {
