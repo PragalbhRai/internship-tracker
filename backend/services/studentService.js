@@ -16,6 +16,11 @@ class StudentService {
 
         return rows[0];
     }
+
+    async updateProfile(studentId, resumeUrl) {
+        await db.query('UPDATE students SET resume_url = ? WHERE student_id = ?', [resumeUrl || null, studentId]);
+        return this.getProfile(studentId);
+    }
 }
 
 module.exports = new StudentService();

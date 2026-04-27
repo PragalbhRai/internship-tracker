@@ -189,6 +189,8 @@ const CompanyDashboard = () => {
                             <tr>
                                 <th className="p-4">Applicant</th>
                                 <th className="p-4">Internship</th>
+                                <th className="p-4">Contact</th>
+                                <th className="p-4">Resume</th>
                                 <th className="p-4">Dept / CGPA</th>
                                 <th className="p-4">Applied Date</th>
                                 <th className="p-4">Status</th>
@@ -199,6 +201,20 @@ const CompanyDashboard = () => {
                                 <tr key={app.application_id} className="hover:bg-gray-50/50">
                                     <td className="p-4 font-semibold text-gray-900">{app.first_name} {app.last_name}</td>
                                     <td className="p-4">{app.title}</td>
+                                    <td className="p-4">
+                                        {app.student_email ? (
+                                            <a href={`mailto:${app.student_email}`} className="text-indigo-600 underline">{app.student_email}</a>
+                                        ) : (
+                                            <span className="text-gray-500">No email</span>
+                                        )}
+                                    </td>
+                                    <td className="p-4">
+                                        {app.resume_url ? (
+                                            <a href={app.resume_url} target="_blank" rel="noreferrer" className="text-indigo-600 underline">View</a>
+                                        ) : (
+                                            <span className="text-gray-500">No resume</span>
+                                        )}
+                                    </td>
                                     <td className="p-4">{app.department} - {app.cgpa}</td>
                                     <td className="p-4">{new Date(app.applied_at).toLocaleDateString()}</td>
                                     <td className="p-4">
@@ -215,7 +231,7 @@ const CompanyDashboard = () => {
                                     </td>
                                 </tr>
                             ))}
-                            {applications.length === 0 && <tr><td colSpan="5" className="p-4 text-center text-gray-500">No applicants yet.</td></tr>}
+                            {applications.length === 0 && <tr><td colSpan="7" className="p-4 text-center text-gray-500">No applicants yet.</td></tr>}
                         </tbody>
                     </table>
                 </div>

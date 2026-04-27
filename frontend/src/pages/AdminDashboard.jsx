@@ -153,6 +153,8 @@ const AdminDashboard = () => {
                             <tr>
                                 <th className="p-4">Roll Number</th>
                                 <th className="p-4">Student Name</th>
+                                <th className="p-4">Email</th>
+                                <th className="p-4">Resume</th>
                                 <th className="p-4">Department / Year</th>
                                 <th className="p-4">CGPA</th>
                                 <th className="p-4">Backlogs</th>
@@ -164,6 +166,14 @@ const AdminDashboard = () => {
                                 <tr key={s.student_id} className="hover:bg-gray-50/50">
                                     <td className="p-4 font-mono font-medium">{s.roll_number}</td>
                                     <td className="p-4 font-semibold text-gray-900">{s.first_name} {s.last_name}</td>
+                                    <td className="p-4 text-indigo-600 underline break-all">{s.email}</td>
+                                    <td className="p-4">
+                                        {s.resume_url ? (
+                                            <a href={s.resume_url} target="_blank" rel="noreferrer" className="text-indigo-600 underline">View</a>
+                                        ) : (
+                                            <span className="text-gray-500">No resume</span>
+                                        )}
+                                    </td>
                                     <td className="p-4">{s.department} - Year {s.year_of_study}</td>
                                     <td className="p-4 font-medium">{s.cgpa}</td>
                                     <td className="p-4">{s.active_backlogs > 0 ? <span className="text-red-500 font-bold">{s.active_backlogs}</span> : '0'}</td>

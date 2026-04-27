@@ -191,7 +191,7 @@ const StudentDashboard = () => {
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
                 {/* Available Internships */}
-                <MotionCard delay={0.1} className="p-6 flex flex-col h-[calc(100vh-12rem)]">
+                <MotionCard delay={0.1} className="p-6 flex flex-col h-[calc(100vh-12rem)] min-h-0">
                     <motion.div 
                         className="flex justify-between items-center mb-4"
                         initial={{ opacity: 0, y: -10 }}
@@ -234,7 +234,7 @@ const StudentDashboard = () => {
                         ))}
                     </div>
 
-                    <div className="space-y-4 overflow-y-auto flex-1 pr-2">
+                    <div className="space-y-4 overflow-y-auto flex-1 pr-2 min-h-0">
                         {filteredInternships.length === 0 ? <p className="text-gray-500">No internships found.</p> :
                             filteredInternships.map(i => {
                                 const hasApplied = appliedIds.includes(i.internship_id);
@@ -269,7 +269,7 @@ const StudentDashboard = () => {
                 </MotionCard>
 
                 {/* My Applications */}
-                <MotionCard delay={0.2} className="p-6 flex flex-col h-[calc(100vh-12rem)]">
+                <MotionCard delay={0.2} className="p-6 flex flex-col h-[calc(100vh-12rem)] min-h-0">
                     <motion.h2 
                         className="text-xl font-bold mb-4 flex items-center gap-2"
                         initial={{ opacity: 0, x: -20 }}
@@ -284,7 +284,7 @@ const StudentDashboard = () => {
                         </motion.div>
                         Active Applications
                     </motion.h2>
-                    <div className="space-y-4 overflow-y-auto flex-1 pr-2">
+                    <div className="space-y-4 overflow-y-auto flex-1 pr-2 min-h-0">
                          {applications.length === 0 ? <p className="text-gray-500">You haven't applied to any internships yet.</p> :
                             applications.map(a => {
                                 const canWithdraw = !['REJECTED', 'WITHDRAWN', 'SELECTED'].includes(a.status);

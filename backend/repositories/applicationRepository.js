@@ -54,7 +54,14 @@ class ApplicationRepository {
     }
 
     async getAllApplicationsCompany(companyId) {
-        const [rows] = await db.query(`SELECT a.*, s.first_name, s.last_name, s.cgpa, s.department, i.title FROM applications a JOIN students s ON a.student_id = s.student_id JOIN internships i ON a.internship_id = i.internship_id WHERE i.company_id = ?`, [companyId]);
+        const [rows] = await db.query(`
+            SELECT a.*, s.first_name, s.last_name, s.cgpa, s.department, s.resume_url, u.email AS student_email, i.title
+            FROM applications a
+            JOIN students s ON a.student_id = s.student_id
+            JOIN users u ON s.student_id = u.user_id
+            JOIN internships i ON a.internship_id = i.internship_id
+            WHERE i.company_id = ?
+        `, [companyId]);
         return rows;
     }
 }
