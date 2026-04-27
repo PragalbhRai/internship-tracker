@@ -10,7 +10,7 @@ const applyValidation = Joi.object({
 });
 
 const updateStatusValidation = Joi.object({
-    status: Joi.string().valid('APPLIED', 'TESTING', 'INTERVIEW', 'SELECTED', 'REJECTED').required()
+    status: Joi.string().valid('APPLIED', 'SHORTLISTED', 'INTERVIEW_SCHEDULED', 'INTERVIEWED', 'SELECTED', 'REJECTED', 'WITHDRAWN').required()
 });
 
 module.exports = { applyValidation, updateStatusValidation };

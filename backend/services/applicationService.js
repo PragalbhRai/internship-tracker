@@ -31,7 +31,14 @@ class ApplicationService {
     }
 
     async updateStatus(applicationId, status, user) {
-        if (user.role === 'COMPANY_POC') {
+        if (user.role === 'STUDENT') {
+            if (status !== 'WITHDRAWN') {
+                throw new AppError('Students can only withdraw their application.', 403);
+            }
+            const myApps = await this.myApplications(user.user_id);
+            const ownsApp = myApps.find(a => a.application_id === parseInt(applicationId));
+            if (!ownsApp) throw new AppError('Application not found or permission denied.', 403);
+        } else if (user.role === 'COMPANY_POC') {
             const check = await applicationRepository.getApplicationForCompanyCheck(applicationId, user.user_id);
             if (!check.length) throw new AppError('Permission denied.', 403);
         }

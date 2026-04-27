@@ -283,3 +283,13 @@ VALUES (1, 'https://s3.bucket/offers/john_doe.pdf', '2026-05-15');
 UPDATE offers 
 SET accepted = TRUE, responded_at = CURRENT_TIMESTAMP 
 WHERE offer_id = 1;
+UPDATE users 
+SET password_hash = '$2b$10$2HJisXGzmIYtl6u08PWyBef7Rx.IhvL/kAlnV6TJUAw5CgNC12yJq'
+WHERE email IN (
+    'amit.s@college.edu', 'priya.p@college.edu',
+    'rahul.k@college.edu', 'neha.g@college.edu',
+    'karan.v@college.edu', 'anjali.d@college.edu',
+    'vikas.y@college.edu', 'sneha.r@college.edu',
+    'hr@wipro.com', 'careers@zoho.com',
+    'ta@flipkart.com', 'hr@tcs.com'
+);

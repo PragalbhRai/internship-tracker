@@ -1,4 +1,3 @@
-const fs = require('fs');
 const mysql = require('mysql2/promise');
 require('dotenv').config({ path: 'backend/.env' });
 
@@ -54,16 +53,8 @@ SELECT user_id, 'TCS Systems Engineer', 'IT Infra', 'SIX_MONTHS', 22000.00, 'Hyb
 
 async function run() {
     console.log("Starting DB script...");
-    
-    // 1. Append to schema.sql
-    try {
-        fs.appendFileSync('schema.sql', "\n" + seedSQL);
-        console.log("Appended core seed to schema.sql successfully.");
-    } catch (e) {
-        console.error("Failed to append to schema.sql", e);
-    }
-    
-    // 2. Execute against DB
+
+    // Execute against DB only (do not mutate schema.sql from seed scripts)
     const connection = await mysql.createConnection({
         host: process.env.DB_HOST || '127.0.0.1',
         user: process.env.DB_USER || 'root',
@@ -117,17 +108,16 @@ async function run() {
         // We will execute the CALL! Eligibility will be enforced by DB logic!
         
         let successApps = 0;
-        let eligibleSQL = ``;
         for(let [s, i] of appsToSubmit) {
             try {
                 await connection.query("CALL apply_to_internship(?, ?)", [s, i]);
                 successApps++;
-                eligibleSQL += `CALL apply_to_internship(${s}, ${i});\n`;
             } catch(e) {
                 // Not eligible!
                 // console.log("Not eligible:", s, i, e.message);
             }
         }
+        console.log(`Applications submitted via procedure: ${successApps}`);
         
         // Let's ensure at least 15 applications exist!
         const [totalAppsCheck] = await connection.query("SELECT application_id FROM applications ORDER BY application_id DESC");
@@ -140,24 +130,9 @@ async function run() {
         for(let j=7; j<9; j++) await connection.query("UPDATE applications SET status = 'SHORTLISTED' WHERE application_id = ?", [appIds[j]]);
         for(let j=9; j<11; j++) await connection.query("UPDATE applications SET status = 'INTERVIEW_SCHEDULED' WHERE application_id = ?", [appIds[j]]);
         
-        // Build the appending sql properly
-        const proceduralSQL = `
--- 5. Applications (Executed procedurally via CALLs for valid candidates)
-${eligibleSQL}
--- 6. Update Statuses and Create Offers
-SET @current_user_id = 1;
-UPDATE applications SET status = 'SELECTED' WHERE application_id IN (${appIds.slice(0,4).join(',')});
-UPDATE applications SET status = 'REJECTED' WHERE application_id IN (${appIds.slice(4,7).join(',')});
-UPDATE applications SET status = 'SHORTLISTED' WHERE application_id IN (${appIds.slice(7,9).join(',')});
-UPDATE applications SET status = 'INTERVIEW_SCHEDULED' WHERE application_id IN (${appIds.slice(9,11).join(',')});
-
-INSERT INTO offers (application_id, offer_letter_url, accepted, response_deadline, responded_at) VALUES 
-(${appIds[0]}, 'https://s3.bucket/offers/new1.pdf', TRUE, '2026-05-20', CURRENT_TIMESTAMP),
-(${appIds[1]}, 'https://s3.bucket/offers/new2.pdf', TRUE, '2026-05-20', CURRENT_TIMESTAMP),
-(${appIds[2]}, 'https://s3.bucket/offers/new3.pdf', NULL, '2026-05-25', NULL),
-(${appIds[3]}, 'https://s3.bucket/offers/new4.pdf', FALSE, '2026-05-22', CURRENT_TIMESTAMP);
-`;
-        fs.appendFileSync('schema.sql', proceduralSQL);
+        if (appIds.length < 11) {
+            throw new Error(`Expected at least 11 applications for status staging, found ${appIds.length}.`);
+        }
         
         // Add offers explicitly
         await connection.query(`

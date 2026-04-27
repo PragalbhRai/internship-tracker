@@ -4,6 +4,8 @@ import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import AnimatedBackground from '../components/AnimatedBackground';
+import { AnimatedTitle } from '../components/AnimatedText';
 
 const Login = () => {
     const { login } = useContext(AuthContext);
@@ -76,12 +78,13 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+        <div className="relative min-h-screen bg-gray-50 flex items-center justify-center p-4 overflow-hidden">
+            <AnimatedBackground />
             <motion.div 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full border border-gray-100 relative"
+                className="relative z-10 bg-white/95 p-8 rounded-2xl shadow-xl max-w-md w-full border border-gray-100 backdrop-blur"
             >
                 <button 
                     onClick={() => navigate('/')} 
@@ -91,7 +94,9 @@ const Login = () => {
                 </button>
 
                 <div className="text-center mb-8 mt-2">
-                    <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">InternTrack</h1>
+                    <AnimatedTitle delay={0.1} className="text-3xl md:text-4xl">
+                        InternTrack
+                    </AnimatedTitle>
                     <p className="text-sm text-gray-500 mt-2">
                         {isLogin ? `Sign in to your ${role.replace('_', ' ')} account` : `Create a ${role.replace('_', ' ')} account`}
                     </p>

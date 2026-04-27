@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { GraduationCap, Building2, ShieldCheck } from 'lucide-react';
+import { AnimatedTitle } from '../components/AnimatedText';
+import ImmersiveScene from '../components/ImmersiveScene';
 
 const RoleSelect = () => {
     const navigate = useNavigate();
@@ -43,22 +45,64 @@ const RoleSelect = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#1E293B] flex flex-col items-center justify-center p-6">
+        <div className="min-h-screen relative overflow-hidden flex flex-col items-center justify-center p-6 bg-slate-900">
+            <ImmersiveScene />
+
+            {/* Animated Gradient Background */}
+            <motion.div
+                animate={{
+                    background: [
+                        'linear-gradient(45deg, rgba(30,41,59,0.75) 0%, rgba(15,23,42,0.82) 100%)',
+                        'linear-gradient(45deg, rgba(49,46,129,0.74) 0%, rgba(15,23,42,0.82) 100%)',
+                        'linear-gradient(45deg, rgba(30,27,75,0.74) 0%, rgba(30,41,59,0.8) 100%)',
+                        'linear-gradient(45deg, rgba(30,41,59,0.75) 0%, rgba(15,23,42,0.82) 100%)',
+                    ],
+                }}
+                transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-0 z-[1]"
+            />
+
+            {/* Floating Orbs */}
+            {[...Array(5)].map((_, i) => (
+                <motion.div
+                    key={i}
+                    animate={{
+                        y: [0, -20, 0],
+                        x: [0, 15, 0],
+                        scale: [1, 1.1, 1]
+                    }}
+                    transition={{
+                        duration: 4 + i,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: i * 0.5
+                    }}
+                    className="absolute bg-indigo-500 rounded-full blur-[80px] z-0"
+                    style={{
+                        width: `${150 + i * 50}px`,
+                        height: `${150 + i * 50}px`,
+                        left: `${10 + i * 20}%`,
+                        top: `${10 + i * 15}%`,
+                        opacity: 0.15
+                    }}
+                />
+            ))}
+
             <motion.div
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
-                className="text-center mb-16"
+                className="text-center mb-16 relative z-10"
             >
-                <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-4 tracking-tight">Welcome to InternTrack</h1>
-                <p className="text-lg text-gray-400 max-w-2xl mx-auto">Please select your role to continue securely to the platform.</p>
+                <AnimatedTitle delay={0.15}>Welcome to InternTrack</AnimatedTitle>
+                <p className="text-lg text-gray-300 max-w-2xl mx-auto">Please select your role to continue securely to the platform.</p>
             </motion.div>
 
             <motion.div 
                 variants={containerVariants}
                 initial="hidden"
                 animate="show"
-                className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full"
+                className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full relative z-10"
             >
                 {roles.map((role) => (
                     <motion.div
@@ -67,7 +111,7 @@ const RoleSelect = () => {
                         whileHover={{ y: -10, scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => navigate(`/login?role=${role.id}`)}
-                        className="bg-white rounded-2xl p-8 cursor-pointer shadow-xl border-2 border-transparent hover:border-indigo-500 transition-colors duration-300 flex flex-col items-center text-center group"
+                        className="bg-white/95 backdrop-blur-sm rounded-2xl p-8 cursor-pointer shadow-xl border-2 border-transparent hover:border-indigo-500 transition-colors duration-300 flex flex-col items-center text-center group"
                     >
                         <div className="p-4 bg-indigo-50 rounded-full mb-6 group-hover:scale-110 transition-transform duration-300">
                             {role.icon}
