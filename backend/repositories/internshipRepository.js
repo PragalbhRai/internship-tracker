@@ -40,7 +40,7 @@ class InternshipRepository {
         const [internships] = await db.query(`
             SELECT i.*, c.name as company_name 
             FROM internships i 
-            JOIN companies c ON i.company_id = c.company_id
+            LEFT JOIN companies c ON i.company_id = c.company_id
         `);
         return internships;
     }

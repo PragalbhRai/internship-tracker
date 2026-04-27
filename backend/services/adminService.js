@@ -18,6 +18,20 @@ class AdminService {
     async getStudents() {
         return await adminRepository.getStudentsWithPlacementStatus();
     }
+
+    async updateStudent(studentId, cgpa, activeBacklogs) {
+        const affectedRows = await adminRepository.updateStudent(studentId, cgpa, activeBacklogs);
+        if (affectedRows === 0) throw new Error('Student not found or no changes made.');
+        return affectedRows;
+    }
+
+    async getAllApplications(filters) {
+        return await adminRepository.getAllApplicationsAdmin(filters);
+    }
+
+    async getDepartmentStats() {
+        return await adminRepository.getDepartmentStats();
+    }
 }
 
 module.exports = new AdminService();

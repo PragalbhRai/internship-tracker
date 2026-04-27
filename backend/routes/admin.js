@@ -8,5 +8,8 @@ router.use(authorizeRoles('ADMIN')); // These routes are strictly Admin-only
 
 router.get('/dashboard', adminController.getDashboardStats);
 router.get('/students', adminController.getStudents);
+router.patch('/students/:id', adminController.updateStudent);
+router.get('/applications', adminController.getAllApplications);
+router.get('/stats/departments', adminController.getDepartmentStats);
 
 module.exports = router;

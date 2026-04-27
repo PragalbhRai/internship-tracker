@@ -8,7 +8,7 @@ const { createInternshipValidation, updateInternshipValidation } = require('../v
 router.use(authenticateToken); // Protected routes
 
 router.get('/', internshipController.getInternships);
-router.post('/', authorizeRoles('COMPANY_POC'), validate(createInternshipValidation), internshipController.createInternship);
+router.post('/', authorizeRoles('COMPANY_POC', 'ADMIN'), validate(createInternshipValidation), internshipController.createInternship);
 router.patch('/:id', authorizeRoles('ADMIN', 'COMPANY_POC'), validate(updateInternshipValidation), internshipController.updateInternship);
 router.delete('/:id', authorizeRoles('ADMIN'), internshipController.deleteInternship);
 

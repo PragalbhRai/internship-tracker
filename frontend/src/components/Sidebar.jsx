@@ -19,7 +19,9 @@ const Sidebar = () => {
             { path: '/company', label: 'Dashboard', icon: <LayoutDashboard size={20} /> }
         ],
         ADMIN: [
-            { path: '/admin', label: 'Dashboard', icon: <LayoutDashboard size={20} /> }
+            { path: '/admin', label: 'Dashboard', icon: <LayoutDashboard size={20} /> },
+            { path: '/admin', label: 'All Applications', icon: <User size={20} /> },
+            { path: '/admin', label: 'Manage Students', icon: <User size={20} /> }
         ]
     };
 

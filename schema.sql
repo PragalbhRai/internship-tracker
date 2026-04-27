@@ -51,7 +51,7 @@ CREATE TABLE companies (
 -- ==========================================
 CREATE TABLE internships (
     internship_id INT AUTO_INCREMENT PRIMARY KEY,
-    company_id INT NOT NULL,
+    company_id INT,
     title VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     type ENUM('SUMMER', 'WINTER', 'SIX_MONTHS', 'PPO') NOT NULL,
@@ -67,7 +67,7 @@ CREATE TABLE internships (
     
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE CASCADE
+    FOREIGN KEY (company_id) REFERENCES companies(company_id) ON DELETE SET NULL
 );
 
 -- ==========================================

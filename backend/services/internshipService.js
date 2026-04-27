@@ -16,11 +16,11 @@ class InternshipService {
 
     async createInternship(internshipData, user) {
         // Enforce role and derive company from user session strictly
-        if (user.role !== 'COMPANY_POC') {
-            throw new AppError('Only companies can create internships.', 403);
+        if (user.role !== 'COMPANY_POC' && user.role !== 'ADMIN') {
+            throw new AppError('Only companies and admins can create internships.', 403);
         }
         
-        const company_id = user.user_id;
+        const company_id = user.role === 'ADMIN' ? null : user.user_id;
 
         const data = { ...internshipData, company_id };
         const internship_id = await internshipRepository.createInternship(data);

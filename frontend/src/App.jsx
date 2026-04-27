@@ -60,6 +60,8 @@ function App() {
 
                 <Route element={<ProtectedRoute allowedRoles={['ADMIN']} />}>
                     <Route path="/admin" element={<AdminDashboard />} />
+                    <Route path="/admin/applications" element={<AdminDashboard />} />
+                    <Route path="/admin/students" element={<AdminDashboard />} />
                 </Route>
             </Routes>
         </AnimatePresence>
